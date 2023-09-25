@@ -209,6 +209,10 @@ resource "vsphere_virtual_machine" "vm" {
       disk_mode         = lookup(terraform_disks.value, "disk_mode", null)
     }
   }
+  cdrom {
+    client_device = true
+  }
+  
   clone {
     template_uuid = var.content_library == null ? data.vsphere_virtual_machine.template[0].id : data.vsphere_content_library_item.library_item_template[0].id
     linked_clone  = var.linked_clone
