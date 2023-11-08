@@ -90,6 +90,7 @@ resource "vsphere_virtual_machine" "vm" {
   extra_config            = var.extra_config
   firmware                = var.content_library == null && var.firmware == null ? data.vsphere_virtual_machine.template[0].firmware : var.firmware
   efi_secure_boot_enabled = var.content_library == null && var.efi_secure_boot == null ? data.vsphere_virtual_machine.template[0].efi_secure_boot_enabled : var.efi_secure_boot
+  vbs_enabled             = var.vbs_enabled
   enable_disk_uuid        = var.content_library == null && var.enable_disk_uuid == null ? data.vsphere_virtual_machine.template[0].enable_disk_uuid : var.enable_disk_uuid
   storage_policy_id       = var.storage_policy_id
 

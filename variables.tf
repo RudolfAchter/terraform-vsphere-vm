@@ -269,6 +269,11 @@ variable "efi_secure_boot" {
   default     = null
 }
 
+variable "vbs_enabled" {
+  description = "(Optional) Enable Virtualization Based Security. Requires firmware to be efi. In addition, vvtd_enabled, nested_hv_enabled, and efi_secure_boot_enabled must all have a value of true. Supported on vSphere 6.7 and later. Default: false"
+  default     = false
+}
+
 variable "num_cores_per_socket" {
   description = "The number of cores to distribute among the CPUs in this virtual machine. If specified, the value supplied to num_cpus must be evenly divisible by this value."
   type        = number
