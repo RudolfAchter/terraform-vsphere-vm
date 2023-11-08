@@ -274,6 +274,12 @@ variable "vbs_enabled" {
   default     = false
 }
 
+variable "vvtd_enabled" {
+  description = "(Optional) Enable Intel Virtualization Technology for Directed I/O for the virtual machine (I/O MMU in the vSphere Client). Supported on vSphere 6.7 and later."
+  default     = false
+}
+
+
 variable "num_cores_per_socket" {
   description = "The number of cores to distribute among the CPUs in this virtual machine. If specified, the value supplied to num_cpus must be evenly divisible by this value."
   type        = number
