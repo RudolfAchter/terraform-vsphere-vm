@@ -138,42 +138,7 @@ resource "vsphere_virtual_machine" "vm" {
       adapter_type = var.network_type != null ? var.network_type[network_interface.key] : (var.content_library == null ? data.vsphere_virtual_machine.template[0].network_interface_types[0] : null)
     }
   }
-  // Disks defined in the original template
-  dynamic "disk" {
-    for_each = var.content_library == null ? data.vsphere_virtual_machine.template[0].disks : []
-    iterator = template_disks
-    content {
-      label             = length(var.disk_label) > 0 ? var.disk_label[template_disks.key] : "disk${template_disks.key}"
-      size              = var.disk_size_gb != null ? var.disk_size_gb[template_disks.key] : data.vsphere_virtual_machine.template[0].disks[template_disks.key].size
-      unit_number       = var.scsi_controller != null ? var.scsi_controller * 15 + template_disks.key : template_disks.key
-      thin_provisioned  = data.vsphere_virtual_machine.template[0].disks[template_disks.key].thin_provisioned
-      eagerly_scrub     = data.vsphere_virtual_machine.template[0].disks[template_disks.key].eagerly_scrub
-      datastore_id      = var.disk_datastore != "" ? data.vsphere_datastore.disk_datastore[0].id : null
-      storage_policy_id = length(var.template_storage_policy_id) > 0 ? var.template_storage_policy_id[template_disks.key] : null
-      io_reservation    = length(var.io_reservation) > 0 ? var.io_reservation[template_disks.key] : null
-      io_share_level    = length(var.io_share_level) > 0 ? var.io_share_level[template_disks.key] : "normal"
-      io_share_count    = length(var.io_share_level) > 0 && var.io_share_level[template_disks.key] == "custom" ? var.io_share_count[template_disks.key] : null
-    }
-  }
-  // Disk for template from Content Library
-  dynamic "disk" {
-    for_each = var.content_library == null ? [] : [1]
-    iterator = template_disks
-    content {
-      label             = length(var.disk_label) > 0 ? var.disk_label[template_disks.key] : "disk${template_disks.key}"
-      size              = var.disk_size_gb[template_disks.key]
-      unit_number       = var.scsi_controller != null ? var.scsi_controller * 15 + template_disks.key : template_disks.key
-      // thin_provisioned  = data.vsphere_virtual_machine.template[0].disks[template_disks.key].thin_provisioned
-      // eagerly_scrub     = data.vsphere_virtual_machine.template[0].disks[template_disks.key].eagerly_scrub
-      datastore_id      = var.disk_datastore != "" ? data.vsphere_datastore.disk_datastore[0].id : null
-      storage_policy_id = length(var.template_storage_policy_id) > 0 ? var.template_storage_policy_id[template_disks.key] : null
-      io_reservation    = length(var.io_reservation) > 0 ? var.io_reservation[template_disks.key] : null
-      io_share_level    = length(var.io_share_level) > 0 ? var.io_share_level[template_disks.key] : "normal"
-      io_share_count    = length(var.io_share_level) > 0 && var.io_share_level[template_disks.key] == "custom" ? var.io_share_count[template_disks.key] : null
-      disk_mode         = length(var.disk_mode) > 0 ? var.disk_mode[template_disks.key] : null
-    }
-  }
-  // Additional disks defined by Terraform config
+  // Disks defined by Terraform config
   dynamic "disk" {
     for_each = var.data_disk
     iterator = terraform_disks
