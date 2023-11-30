@@ -185,6 +185,8 @@ resource "vsphere_virtual_machine" "vm" {
     linked_clone  = var.linked_clone
     timeout       = var.timeout
 
+    # TODO For vsphere Provider 2.6.0 compatibility the customize stuff must go into a new resource named vsphere_guest_os_customization
+    # https://registry.terraform.io/providers/hashicorp/vsphere/2.6.0/docs/resources/guest_os_customization
     customize {
       dynamic "linux_options" {
         for_each = var.is_windows_image ? [] : [1]
