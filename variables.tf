@@ -135,6 +135,11 @@ variable "staticvmname" {
   default     = null
 }
 
+variable "guest_hostname" {
+  type = string
+  description = "The hostname for this VM"
+}
+
 variable "fqdnvmname" {
   description = "If true, the vm will be created using domain variable appended"
   type        = bool
