@@ -79,11 +79,12 @@ variable "cdrom" {
     datastore_index = number
   }))
   default = {
-    "cdrom1" = {
-      path = ""
-      use_client_device = true
-      datastore_index = 0
-    }
+    # Default ist kein CDRom Drive
+    # "cdrom1" = {
+    #   path = ""
+    #   use_client_device = true
+    #   datastore_index = 0
+    # }
   }
 }
 
