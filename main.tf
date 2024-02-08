@@ -71,6 +71,22 @@ data "vsphere_folder" "folder" {
   depends_on  = [var.vm_depends_on]
 }
 
+variable "cdrom" {
+  description = "A map of CD-ROM devices to attach to the virtual machine"
+  type = map(object({
+    path = string
+    use_client_device = bool
+    datastore_index = number
+  }))
+  default = {
+    "cdrom1" = {
+      path = "/path/to/cdrom1.iso"
+      use_client_device = true
+      datastore_index = 0
+    }
+  }
+}
+
 locals {
   interface_count     = length(var.ipv4submask) #Used for Subnet handeling
   template_disk_count = var.content_library == null ? length(data.vsphere_virtual_machine.template[0].disks) : 0
@@ -176,10 +192,15 @@ resource "vsphere_virtual_machine" "vm" {
       disk_mode         = lookup(terraform_disks.value, "disk_mode", null)
     }
   }
-  cdrom {
-    client_device = true
+
+  dynamic "cdrom" {
+    for_each = var.cdrom
+    content {
+      datastore_id = cdrom.value.path != "" ? data.vsphere_datastore.disk_datastore[cdrom.value.datastore_index].id : null
+      path         =  cdrom.value.path
+      client_device = cdrom.value.use_client_device
+    }
   }
-  
   clone {
     template_uuid = var.content_library == null ? data.vsphere_virtual_machine.template[0].id : data.vsphere_content_library_item.library_item_template[0].id
     linked_clone  = var.linked_clone
