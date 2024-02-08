@@ -80,7 +80,7 @@ variable "cdrom" {
   }))
   default = {
     "cdrom1" = {
-      path = "/path/to/cdrom1.iso"
+      path = ""
       use_client_device = true
       datastore_index = 0
     }
@@ -199,7 +199,7 @@ resource "vsphere_virtual_machine" "vm" {
   dynamic "cdrom" {
     for_each = var.cdrom
     content {
-      datastore_id = cdrom.value.path != "" ? data.vsphere_datastore.datastore[cdrom.value.datastore_index].id : null
+      datastore_id =  cdrom.value.path != "" ? data.vsphere_datastore.datastore[cdrom.value.datastore_index].id : null
       path         =  cdrom.value.path
       client_device = cdrom.value.use_client_device
     }
