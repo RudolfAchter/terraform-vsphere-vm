@@ -108,15 +108,16 @@ resource "vsphere_virtual_machine" "vm" {
       # prevent_destroy = var.prevent_destroy
       ignore_changes = [
           # TODO passende ignore_changes Felder definieren
-          # Ignore some changes to prevent destroying
-          # password,
-          # ssh_public_keys,
-          # ostemplate,
-          # mountpoint,
-          # rootfs[0].storage,
-          # clone[0].customize[0].windows_options[0].admin_password,
+          clone[0].customize[0].windows_options[0].admin_password,
           clone[0].customize[0].windows_options[0].domain_admin_user,
           clone[0].customize[0].windows_options[0].domain_admin_password,
+          clone[0].customize[0].windows_options[0].product_key,
+          clone[0].customize[0].windows_options[0].run_once_command_list,
+          clone[0].customize[0].windows_options[0].auto_logon,
+          clone[0].customize[0].windows_options[0].auto_logon_count,
+          clone[0].customize[0].windows_options[0].time_zone,
+          clone[0].customize[0].windows_options[0].full_name,
+          clone[0].customize[0].windows_options[0].organization_name
           #windows_options[0].product_key
       ]
   }
