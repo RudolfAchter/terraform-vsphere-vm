@@ -87,6 +87,11 @@ variable "cdrom" {
     # }
   }
 }
+variable "prevent_destroy" {
+  description = "Prevent accidental deletion of the vm"
+  type        = bool
+  default     = true
+}
 
 locals {
   interface_count     = length(var.ipv4submask) #Used for Subnet handeling
@@ -95,6 +100,26 @@ locals {
 
 // Cloning a Linux or Windows VM from a given template.
 resource "vsphere_virtual_machine" "vm" {
+
+  # https://coderbook.com/@marcus/prevent-terraform-from-recreating-or-deleting-resource/
+  lifecycle {
+      # Prevent accidental deletion of the vm
+      prevent_destroy = var.prevent_destroy
+      ignore_changes = [
+          # TODO passende ignore_changes Felder definieren
+          # Ignore some changes to prevent destroying
+          # password,
+          # ssh_public_keys,
+          # ostemplate,
+          # mountpoint,
+          # rootfs[0].storage,
+          windows_options[0].admin_password,
+          windows_options[0].domain_admin_user,
+          windows_options[0].domain_admin_password,
+          #windows_options[0].product_key
+      ]
+  }
+
   count      = var.instances
   depends_on = [var.vm_depends_on]
   name       = "${var.staticvmname != null ? var.staticvmname : format("${var.vmname}${var.vmnameformat}", count.index + var.vmstartcount)}${var.fqdnvmname == true ? ".${var.domain}" : ""}"
