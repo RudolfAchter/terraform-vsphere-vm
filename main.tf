@@ -114,7 +114,7 @@ resource "vsphere_virtual_machine" "vm" {
           # ostemplate,
           # mountpoint,
           # rootfs[0].storage,
-          clone[0].customize[0].windows_options[0].admin_password,
+          # clone[0].customize[0].windows_options[0].admin_password,
           clone[0].customize[0].windows_options[0].domain_admin_user,
           clone[0].customize[0].windows_options[0].domain_admin_password,
           #windows_options[0].product_key
