@@ -104,7 +104,8 @@ resource "vsphere_virtual_machine" "vm" {
   # https://coderbook.com/@marcus/prevent-terraform-from-recreating-or-deleting-resource/
   lifecycle {
       # Prevent accidental deletion of the vm
-      prevent_destroy = var.prevent_destroy
+      # Variables not allowed in lifecycle block: https://github.com/hashicorp/terraform/issues/22544
+      # prevent_destroy = var.prevent_destroy
       ignore_changes = [
           # TODO passende ignore_changes Felder definieren
           # Ignore some changes to prevent destroying
