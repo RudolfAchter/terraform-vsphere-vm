@@ -117,8 +117,10 @@ resource "vsphere_virtual_machine" "vm" {
           clone[0].customize[0].windows_options[0].auto_logon_count,
           clone[0].customize[0].windows_options[0].time_zone,
           clone[0].customize[0].windows_options[0].full_name,
-          clone[0].customize[0].windows_options[0].organization_name
-          #windows_options[0].product_key
+          clone[0].customize[0].windows_options[0].organization_name,
+          ept_rvi_mode,
+          hv_mode,
+          tags
       ]
   }
 
